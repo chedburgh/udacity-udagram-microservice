@@ -20,21 +20,6 @@ before_install:
 
 jobs:
   include:
-    - stage: build
-      script: 
-        # build the various modules to ensure there are no errors
-        - cd udacity-c3-frontend
-        - npm install
-        - npm run build
-        - cd -
-        - cd udacity-c3-restapi-feed/
-        - npm install
-        - npm run build
-        - cd -
-        - cd udacity-c3-restapi-user/
-        - npm install
-        - npm run build
-        - cd -
     - stage: dockerize
       script: 
         # create and push the docker containers
