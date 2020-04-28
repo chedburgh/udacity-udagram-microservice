@@ -6,14 +6,39 @@ env:
   - DOCKER_COMPOSE_VERSION=1.25.5
 
 before_install:
+  # setup docker-compose
   - docker -v && docker-compose -v
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+
+  # install kubectl
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - sudo mv ./kubectl /usr/local/bin/kubectl
 
-install:
-  - docker-compose -f udacity-c3-deployment/docker/docker-compose-build.yaml build --parallel 
+jobs:
+  include:
+    - stage: build
+      script: 
+        # build the various modules to ensure there are no errors
+        - cd udacity-c3-frontend
+        - npm install
+        - npm run build
+        - cd -
+        - cd udacity-c3-restapi-feed/
+        - npm install
+        - npm run build
+        - cd -
+        - cd udacity-c3-restapi-user/
+        - npm install
+        - npm run build
+        - cd -
+    - stage: dockerize
+      script: 
+        # create and push the docker containers
+        - cd udacity-c3-deployment/docker
+        - docker-compose -f docker-compose-build.yaml build --parallel --no-cache
+        - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
+        - docker-compose -f docker-compose-build.yaml push
