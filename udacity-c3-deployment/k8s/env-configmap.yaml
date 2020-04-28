@@ -4,8 +4,8 @@ data:
   AWS_BUCKET: udagram-file-store
   AWS_PROFILE: udagram
   AWS_REGION: eu-west-1
-  #JWT_SECRET: helloworld
-  POSTGRESS_DB: udagram
+  JWT_SECRET: helloworld
+  POSTGRESS_DB: udagramjamesdev
   POSTGRESS_HOST: udagramjamesdev.cbxnlirhetmb.eu-west-1.rds.amazonaws.com
   URL: http://localhost:8100  
 metadata:
