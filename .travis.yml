@@ -25,7 +25,7 @@ before_install:
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
   - cat  ${HOME}/.kube/config
-  - kubectl get svc
+  - kubectl --kubeconfig=${HOME}/.kube/config get svc
 jobs:
   include:
   - stage: dockerize
