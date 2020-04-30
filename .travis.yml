@@ -27,7 +27,7 @@ before_install:
   - cat  ${HOME}/.kube/config
   - cat  ~/.kube/config
   - echo ${KUBECONFIG}
-  - kubectl --kubeconfig= ~/.kube/config get svc
+  - kubectl --kubeconfig=~/.kube/config get svc
 jobs:
   include:
   - stage: dockerize
