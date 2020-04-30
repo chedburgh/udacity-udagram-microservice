@@ -25,7 +25,7 @@ before_install:
 
   # setup kubeconfig
   - mkdir -p ${HOME}/.kube
-  - cp udacity-c3-deployment/k8s/udagram-kubeconfig ${HOME}/.kube/config
+  - cp udacity-c3-deployment/k8s/kubeconfig-template.yaml ${HOME}/.kube/config
   - cat ${HOME}/.kube/config
   - export KUBECONFIG=${HOME}/.kube/config
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
