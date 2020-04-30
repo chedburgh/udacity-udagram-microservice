@@ -29,7 +29,7 @@ before_install:
   - export KUBECONFIG=${HOME}/.kube/config
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
-  - cat ${HOME}/.kube
+  - cat ${HOME}/.kube/config
   - kubectl get deployments
 
 jobs:
