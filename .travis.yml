@@ -7,27 +7,24 @@ env:
   - secure: qrg2ZhnbNKjyTNP2w6wSvixJ2ZYVhhtMjV/fXU/5OqiGIlzLUZ1RMM62Zak6Fygn93/ce6N2Frrahb/1phKNGf4Xm/iIMhqnoqQzOiK2iXR/W+/ucvd7GhF/lbz9GALoTvNSFcdkVfSYCyiJo70HMYHShA42ji9ubN5qRmhs5yX71xyjna0Jaw/fq9lO40mwlnGitNxJbpsKjMrEu5egnv8/rQ/momHBpZgVb311+lFN/1rOgYek0acqL2w9t4Ll9cMoGINyHDf5C0Eze9i7KRzmt9U7f7rEFR5iRLT82BjKluB9IfldpSH1GYdgpMX5iNjsYq1oq+3DEY1xli84MEAmahhILW2E5768i34M0GStHO4/wZ0K/UbuMCv3QDrKs9Y6jATQ4AxcZr0KDhiPJlBeXWfXmMTfe/GOXhDjCiyhdUAIHIwdLYwfQoryLlNA7/Xp3fALPyJCXoigN48OklsfCGlVouUI5k0LupY5eCyEH7Jyv1emKSItTL1H73TBXA/NEvLgO3KbumQIwUM86KA7CCHO3x7R2GIOJlvMcVsAfYucHjkoV4zs0IILjRFkjz6u5wXiUjh3qk1hMmEJIHw1XnoIKcyef9sLdrPJrB9xqnsrMfnl3kq5GA/grExgDmndXh+0CQuyj4wDsYx0rDQ5obAdcad0BYlJEg+S7zg=
   - secure: PoASfEZpchqVYszGQeJfBHOVRjP2z9ckBiDF4LhW/PPjJ9DaCn4gzajyF4Ht9baEOrwC9A8sswAgFL389CY2B3ltiF21HNMvGJ47DuMP+MVsaQJTbDxujW+i/isAk05XAwMerwYGUhGDgJiMDpJ+zzONWvRr6kpLWwqB1MHVTPVbKym0xLb60NA9qZ7+0iNalqzXAs8IvS9n1FR7B25w6OrbRCWwafbFWp/uafXRQyT5pSX6dXD9u4T1rbnLgLjZuYEqbIL7IWn+OQ2erpr4hdlj1EjN2xPaMTY0R8HRyXHfP8FJFAuk59d9hHVzW+YY4vUJItOm6CldMAtuLK4Wh7hZr7KJiXPNddaTWmTnYem5divuxfVSJopWSyyBXHEp2Afm7esZ6EDYCWSS52yUkwZQZKQ3T9pHntkPpWz4hxEw4A/QDsUNHCW3KROFKvnU6N7Kdt3wkqevTAzi5XHqoCTnnQzYKIT8CdkvUbTqEpqYyb0BIxemaT1WcWzTJbodiE5b6Dsdlpt2Ici8n2EdVrd/CJd7K7LnrDusH/WmdxrDFI7pdXyYN1BtZBlnwPp39ibNGHpR3aZiAqaRqB9xaohvaMlDZPNwgvoLJh+eXcZi/HsTZ2MKdqhFMwsKwNGTMJHeVQI0FxHY+xgbKM/3N7XnR+YZ6bCjzWt7b0SSoN0=
 before_install:
-- docker -v && docker-compose -v
-- sudo rm /usr/local/bin/docker-compose
-- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
-  -s`-`uname -m` > docker-compose
-- chmod +x docker-compose
-- sudo mv docker-compose /usr/local/bin
-- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-- chmod +x ./kubectl
-- sudo mv ./kubectl /usr/local/bin/kubectl
-- curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
-- chmod +x ./aws-iam-authenticator
-- sudo mv ./aws-iam-authenticator /usr/local/bin/
-- mkdir -p ${HOME}/.kube
-- cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
-- cat  ${HOME}/.kube/config
-- export KUBECONFIG=${HOME}/.kube/config
-- kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data
-  "$CERTIFICATE"
-- cat  ${HOME}/.kube/config
-- kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
-- kubectl get svc
+  - docker -v && docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+  - curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
+  - chmod +x ./aws-iam-authenticator
+  - sudo mv ./aws-iam-authenticator /usr/local/bin/
+  - mkdir -p ${HOME}/.kube
+  - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
+  - export KUBECONFIG=${HOME}/.kube/config
+  - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
+  - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
+  - cat  ${HOME}/.kube/config
+  - kubectl get svc
 jobs:
   include:
   - stage: dockerize
