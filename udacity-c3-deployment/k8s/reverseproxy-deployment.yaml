@@ -9,6 +9,11 @@ spec:
     matchLabels:
       service: reverseproxy
   replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
