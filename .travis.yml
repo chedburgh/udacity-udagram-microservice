@@ -23,7 +23,7 @@ before_install:
   - export KUBECONFIG=${HOME}/.kube/config
   #- kubectl config set clusters.kubenetes.certificate-authority-data "$CERTIFICATE"
   #- kubectl config set clusters.kubenetes.server "$ENDPOINT"
-  - kubectl get deployments
+  - kubectl --kubeconfig=udacity-c3-deployment/eks/kubeconfig-template.yaml get deployments
 jobs:
   include:
   - stage: dockerize
