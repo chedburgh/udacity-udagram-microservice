@@ -23,6 +23,15 @@ before_install:
   - chmod +x ./aws-iam-authenticator
   - sudo mv ./aws-iam-authenticator /usr/local/bin/
 
+  # setup kubeconfig
+  - mkdir ${HOME}/.kube
+  - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
+  - export KUBECONFIG=${HOME}/.kube/config
+  - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
+  - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
+  - cat ${HOME}/.kube
+  - kubectl get deployments
+
 jobs:
   include:
     - stage: dockerize
@@ -39,13 +48,6 @@ jobs:
 
     - stage: aws_eks_deploy
       script:
-        # setup kubeconfig
-        - mkdir ${HOME}/.kube
-        - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
-        - export KUBECONFIG=${HOME}/.kube/config
-        - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
-        - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
-        
         # now deploy to kubernetes 
         - cd udacity-c3-deployment/k8s
         - kubectl apply -f backend-feed-service.yaml
