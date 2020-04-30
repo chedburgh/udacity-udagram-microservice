@@ -25,6 +25,7 @@ before_install:
   - kubectl config set clusters.kubenetes.certificate-authority-data "$CERTIFICATE"
   - kubectl config set clusters.kubenetes.server "$ENDPOINT"
   - cat  ${HOME}/.kube/config
+  - echo echo ${KUBECONFIG}
   - kubectl get svc
 jobs:
   include:
