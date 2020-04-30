@@ -40,12 +40,14 @@ jobs:
         - docker-compose -f docker-compose-build.yaml push
 
     - stage: docker_deploy
+      script: 
         # now deploy to dockerhub
         - cd udacity-c3-deployment/docker
         - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
         - docker-compose -f docker-compose-build.yaml push          
 
     - stage: aws_eks_deploy
+      script: 
         # now deploy to kubernetes 
         - cd udacity-c3-deployment/k8s
         - kubectl apply -f backend-feed-service.yaml
