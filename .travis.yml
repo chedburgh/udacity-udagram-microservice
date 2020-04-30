@@ -32,8 +32,8 @@ before_install:
   - mkdir -p ${HOME}/.kube
   - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
   - export KUBECONFIG=${HOME}/.kube/config
-  - kubectl config set clusters.kubenetes.certificate-authority-data "$CERTIFICATE"
-  - kubectl config set clusters.kubenetes.server "$ENDPOINT"
+  - kubectl config set clusters.kubernetes.certificate-authority-data "$CERTIFICATE"
+  - kubectl config set clusters.kubernetes.server "$ENDPOINT"
   - kubectl get deployments
   - kubectl version
 
