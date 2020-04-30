@@ -21,13 +21,9 @@ before_install:
   - mkdir -p ${HOME}/.kube
   - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
   - export KUBECONFIG=${HOME}/.kube/config
-  - cat  ${HOME}/.kube/config
-  - kubectl config set clusters.kubenetes.certificate-authority-data "$CERTIFICATE"
-  - kubectl config set clusters.kubenetes.server "$ENDPOINT"
-  - cat  ${HOME}/.kube/config
-  - cat  ~/.kube/config
-  - echo ${KUBECONFIG}
-  - kubectl --kubeconfig=${HOME}/.kube/config get svc
+  #- kubectl config set clusters.kubenetes.certificate-authority-data "$CERTIFICATE"
+  #- kubectl config set clusters.kubenetes.server "$ENDPOINT"
+  - kubectl get deployments
 jobs:
   include:
   - stage: dockerize
