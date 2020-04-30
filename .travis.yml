@@ -26,6 +26,7 @@ before_install:
   # setup kubeconfig
   - mkdir ${HOME}/.kube
   - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
+  - export KUBECONFIG=${HOME}/.kube/config
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
 
@@ -35,7 +36,7 @@ jobs:
       script: 
         # create and push the docker containers
         - cd udacity-c3-deployment/docker
-        - docker-compose -f docker-compose-build.yaml build --parallel --no-cache
+        - docker-compose -f docker-compose-build.yaml build --parallel
         - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
         - docker-compose -f docker-compose-build.yaml push
 
