@@ -24,12 +24,12 @@ before_install:
   - sudo mv ./aws-iam-authenticator /usr/local/bin/
 
   # setup kubeconfig
-  - mkdir ${HOME}/.kube
-  - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
+  - mkdir -p ${HOME}/.kube
+  - cp udacity-c3-deployment/k8s/udagram-kubeconfig ${HOME}/.kube/config
+  - cat ${HOME}/.kube/config
   - export KUBECONFIG=${HOME}/.kube/config
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
   - kubectl config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
-  - cat ${HOME}/.kube/config
   - cat udacity-c3-deployment/eks/kubeconfig-template.yaml
   - kubectl get svc
 
