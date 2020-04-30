@@ -18,6 +18,17 @@ before_install:
   - chmod +x ./kubectl
   - sudo mv ./kubectl /usr/local/bin/kubectl
 
+  # install aws-iam-authenticator
+  - curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
+  - chmod +x ./aws-iam-authenticator
+  - sudo mv ./aws-iam-authenticator /usr/local/bin/
+
+  # setup kubeconfig
+  - mkdir ${HOME}/.kube
+  - cp udacity-c3-deployment/eks/kubeconfig-template.yaml ${HOME}/.kube/config
+  - kubectl config set config set clusters.udagram.eu-west-1.eksctl.io.certificate-authority-data "$CERTIFICATE"
+  - kubectl config set config set clusters.udagram.eu-west-1.eksctl.io.server "$ENDPOINT"
+
 jobs:
   include:
     - stage: dockerize
@@ -27,3 +38,29 @@ jobs:
         - docker-compose -f docker-compose-build.yaml build --parallel --no-cache
         - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
         - docker-compose -f docker-compose-build.yaml push
+
+    - stage: docker_deploy
+        # now deploy to dockerhub
+        - cd udacity-c3-deployment/docker
+        - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
+        - docker-compose -f docker-compose-build.yaml push          
+
+    - stage: aws_eks_deploy
+        # now deploy to kubernetes 
+        - cd udacity-c3-deployment/k8s
+        - kubectl apply -f backend-feed-service.yaml
+        - kubectl apply -f backend-user-service.yaml
+        - kubectl apply -f frontend-service.yaml
+        - kubectl apply -f reverseproxy-service.yaml
+        - kubectl apply -f aws-secret.yaml
+        - kubectl apply -f env-configmap.yaml
+        - kubectl apply -f env-secret.yaml
+        - kubectl apply -f backend-feed-deployment.yaml
+        - kubectl apply -f backend-user-deployment.yaml
+        - kubectl apply -f frontend-deployment.yaml
+        - kubectl apply -f reverseproxy-deployment.yaml
+
+# safelist
+branches:
+  only:
+  - master
